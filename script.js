@@ -275,7 +275,6 @@ const countries = [
 
 
 let selectedCountry = null;
-let barcodeCounter = parseInt(localStorage.getItem('barcodeCounter')) || 1;
 
 // Toast notification functions
 function showToast(message, type = 'success', duration = 10000) {
@@ -488,12 +487,9 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
     button.disabled = true;
     buttonText.innerHTML = '<div class="loading-spinner"></div>';
 
-    // Generate barcode_no without incrementing yet
-    const barcodeNo = `ET${String(barcodeCounter).padStart(2, '0')}`;
 
     // Collect form data
     const formData = {
-        barcode_no: barcodeNo,
         full_name: document.getElementById('fullName').value,
         nationality: document.getElementById('nationality').value,
         email: document.getElementById('email').value,
@@ -533,8 +529,9 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
         }
 
     } catch (error) {
+
         // Show error toast
-        showToast('❌ Registration failed. Please try again.', 'error');
+        showToast('Registration failed. Please try again.', 'error');
 
         // Don't reset form on failure - just restore button
         buttonText.textContent = 'Register Now';
@@ -549,6 +546,7 @@ async function sendToBigQuery(data) {
         const user = auth.currentUser;
         const idToken = await user.getIdToken();
 
+
         const response = await fetch("https://synctobigqueryandemail-13608153412.europe-west1.run.app", {
             method: "POST",
             headers: {
@@ -559,6 +557,7 @@ async function sendToBigQuery(data) {
         });
 
         const result = await response.json();
+
         if (response.ok && result.status === "success") {
             // Show success toast
             showToast(result.message, "success");
@@ -570,11 +569,10 @@ async function sendToBigQuery(data) {
         }
 
     } catch (error) {
-        showToast("❌ Network error. Please check your connection and try again.", 'error');
+        showToast("Network error. Please check your connection and try again.", 'error');
         return false;
     }
 }
 
 // Initial setup for login form validation
-
 validateLogin();
