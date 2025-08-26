@@ -344,7 +344,6 @@ document.getElementById('loginForm').addEventListener('submit', async function (
         showToast('Signed in successfully!', 'success');
         // The onAuthStateChanged will handle showing the expo form
     } catch (error) {
-        console.error('Sign in failed:', error);
         showToast(`Sign in failed: ${error.message}`, 'error');
         // Restore button
         button.disabled = false;
@@ -534,8 +533,6 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
         }
 
     } catch (error) {
-        console.error('Registration failed:', error);
-
         // Show error toast
         showToast('❌ Registration failed. Please try again.', 'error');
 
@@ -552,8 +549,6 @@ async function sendToBigQuery(data) {
         const user = auth.currentUser;
         const idToken = await user.getIdToken();
 
-        console.log("📤 Sending to Cloud Function:", data);
-
         const response = await fetch("https://synctobigqueryandemail-13608153412.europe-west1.run.app", {
             method: "POST",
             headers: {
@@ -564,8 +559,6 @@ async function sendToBigQuery(data) {
         });
 
         const result = await response.json();
-        console.log("📥 Response from Cloud Function:", result);
-
         if (response.ok && result.status === "success") {
             // Show success toast
             showToast(result.message, "success");
@@ -577,11 +570,11 @@ async function sendToBigQuery(data) {
         }
 
     } catch (error) {
-        console.error("🚨 Error calling Cloud Function:", error);
         showToast("❌ Network error. Please check your connection and try again.", 'error');
         return false;
     }
 }
 
 // Initial setup for login form validation
+
 validateLogin();
