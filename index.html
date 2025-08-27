@@ -2,140 +2,153 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>English Talks Education Expo</title>
-    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="icon" type="image/png" href="favicon.png" />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+        rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
     <!-- Toast Container -->
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- Expo Container -->
-    <div class="form-container" id="expoContainer">
-        <h1 class="form-title">Education Expo 2025</h1>
+    <!-- MAIN WRAPPER: left image (50%) + right form (50%) -->
+    <div class="expo-wrapper">
 
-        <form id="registrationForm">
-            <div class="form-group">
-                <label for="fullName" style="font-weight: bold;">Full Name<span class="required">*</span></label>
-                <input type="text" id="fullName" class="form-control" required>
-            </div>
+        <!-- LEFT IMAGE (50%) -->
+        <div class="image-container">
+            <!-- Replace expo-image.jpg with your real image path/filename -->
+            <img src="expo_banner.jpg" alt="Education Expo">
+        </div>
 
-            <div class="form-group">
-                <label for="nationality" style="font-weight: bold;">Nationality<span class="required">*</span></label>
-                <div class="dropdown-container">
-                    <button type="button" class="dropdown-button" id="nationalityButton">
-                        <span id="nationalityText">Select Country</span>
-                        <div class="dropdown-arrow"></div>
-                    </button>
-                    <div class="dropdown-menu" id="nationalityDropdown">
-                        <input type="text" class="dropdown-search" id="countrySearch" placeholder="Search countries...">
-                        <div id="countryList"></div>
+        <!-- RIGHT FORM (50%) -->
+        <div class="form-container" id="expoContainer">
+            <h1 class="form-title">Education Expo 2025</h1>
+
+            <form id="registrationForm">
+                <div class="form-group">
+                    <label for="fullName" style="font-weight: bold;">Full Name<span class="required">*</span></label>
+                    <input type="text" id="fullName" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="nationality" style="font-weight: bold;">Nationality<span
+                            class="required">*</span></label>
+                    <div class="dropdown-container">
+                        <button type="button" class="dropdown-button" id="nationalityButton">
+                            <span id="nationalityText">Select Country</span>
+                            <div class="dropdown-arrow"></div>
+                        </button>
+                        <div class="dropdown-menu" id="nationalityDropdown">
+                            <input type="text" class="dropdown-search" id="countrySearch"
+                                placeholder="Search countries...">
+                            <div id="countryList"></div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="nationality" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" style="font-weight: bold;">E-Mail Address<span class="required">*</span></label>
+                    <input type="email" id="email" class="form-control" required>
+                    <!-- Added note below email without changing styles -->
+                    <div style="font-size:12px;color:#ff0000;margin-top:5px;">Please enter a valid email
+                        address.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone" style="font-weight: bold;">Phone/WhatsApp Number<span
+                            class="required">*</span></label>
+                    <input type="tel" id="phone" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="startDate" style="font-weight: bold;">Start Date<span class="required">*</span></label>
+                    <div class="dropdown-container">
+                        <button type="button" class="dropdown-button" id="startDateButton">
+                            <span id="startDateText">Select Date</span>
+                            <div class="dropdown-arrow"></div>
+                        </button>
+                        <div class="dropdown-menu" id="startDateDropdown">
+                            <div class="dropdown-item" data-value="3-6 months">3-6 months</div>
+                            <div class="dropdown-item" data-value="6-12 months">6-12 months</div>
+                            <div class="dropdown-item" data-value="1 year+">1 year+</div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="startDate" required>
+                </div>
+
+                <div class="form-group">
+                    <label style="font-weight: bold;">Interest</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="english" name="interest" value="English Language">
+                            <label for="english">English Language</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="foundation" name="interest" value="Foundation Programme">
+                            <label for="foundation">Foundation Programme</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="university" name="interest" value="University">
+                            <label for="university">University</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="college" name="interest" value="College">
+                            <label for="college">College</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="summer" name="interest" value="Summer Camp">
+                            <label for="summer">Summer Camp</label>
+                        </div>
                     </div>
                 </div>
-                <input type="hidden" id="nationality" required>
-            </div>
 
-            <div class="form-group">
-                <label for="email" style="font-weight: bold;">E-Mail Address<span class="required">*</span></label>
-                <input type="email" id="email" class="form-control" required>
-                <!-- Added note below email without changing styles -->
-                <div style="font-size:12px;color:#ff0000;margin-top:5px;">Please enter a valid email address.</div>
-            </div>
-
-            <div class="form-group">
-                <label for="phone" style="font-weight: bold;">Phone/WhatsApp Number<span
-                        class="required">*</span></label>
-                <input type="tel" id="phone" class="form-control" required>
-            </div>
-
-            <div class="form-group">
-                <label for="startDate" style="font-weight: bold;">Start Date<span class="required">*</span></label>
-                <div class="dropdown-container">
-                    <button type="button" class="dropdown-button" id="startDateButton">
-                        <span id="startDateText">Select Date</span>
-                        <div class="dropdown-arrow"></div>
-                    </button>
-                    <div class="dropdown-menu" id="startDateDropdown">
-                        <div class="dropdown-item" data-value="3-6 months">3-6 months</div>
-                        <div class="dropdown-item" data-value="6-12 months">6-12 months</div>
-                        <div class="dropdown-item" data-value="1 year+">1 year+</div>
+                <div class="form-group">
+                    <label style="font-weight: bold;">City & Date</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="port" name="cityDate" value="Port Mounnt - 6th October">
+                            <label for="port">Port Mounnt - 6th October</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="concepcion" name="cityDate" value="Concepcion - 8th October">
+                            <label for="concepcion">Concepcion - 8th October</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="santiago" name="cityDate" value="Santiago - 10th & 11th October">
+                            <label for="santiago">Santiago - 10th & 11th October</label>
+                        </div>
                     </div>
                 </div>
-                <input type="hidden" id="startDate" required>
-            </div>
 
-            <div class="form-group">
-                <label style="font-weight: bold;">Interest</label>
-                <div class="radio-group">
-                    <div class="radio-item">
-                        <input type="radio" id="english" name="interest" value="English Language">
-                        <label for="english">English Language</label>
-                    </div>
-                    <div class="radio-item">
-                        <input type="radio" id="foundation" name="interest" value="Foundation Programme">
-                        <label for="foundation">Foundation Programme</label>
-                    </div>
-                    <div class="radio-item">
-                        <input type="radio" id="university" name="interest" value="University">
-                        <label for="university">University</label>
-                    </div>
-                    <div class="radio-item">
-                        <input type="radio" id="college" name="interest" value="College">
-                        <label for="college">College</label>
-                    </div>
-                    <div class="radio-item">
-                        <input type="radio" id="summer" name="interest" value="Summer Camp">
-                        <label for="summer">Summer Camp</label>
+                <div class="form-group">
+                    <label style="font-weight: bold;">Time</label>
+                    <div class="radio-group">
+                        <div class="radio-item">
+                            <input type="radio" id="time1" name="time" value="11:00 - 13:00">
+                            <label for="time1">11:00 - 13:00</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="time2" name="time" value="13:00 - 15:00">
+                            <label for="time2">13:00 - 15:00</label>
+                        </div>
+                        <div class="radio-item">
+                            <input type="radio" id="time3" name="time" value="15:00 - 18:00">
+                            <label for="time3">15:00 - 18:00</label>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="form-group">
-                <label style="font-weight: bold;">City & Date</label>
-                <div class="radio-group">
-                    <div class="radio-item">
-                        <input type="radio" id="port" name="cityDate" value="Port Mounnt - 6th October">
-                        <label for="port">Port Mounnt - 6th October</label>
-                    </div>
-                    <div class="radio-item">
-                        <input type="radio" id="concepcion" name="cityDate" value="Concepcion - 8th October">
-                        <label for="concepcion">Concepcion - 8th October</label>
-                    </div>
-                    <div class="radio-item">
-                        <input type="radio" id="santiago" name="cityDate" value="Santiago - 10th & 11th October">
-                        <label for="santiago">Santiago - 10th & 11th October</label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label style="font-weight: bold;">Time</label>
-                <div class="radio-group">
-                    <div class="radio-item">
-                        <input type="radio" id="time1" name="time" value="11:00 - 13:00">
-                        <label for="time1">11:00 - 13:00</label>
-                    </div>
-                    <div class="radio-item">
-                        <input type="radio" id="time2" name="time" value="13:00 - 15:00">
-                        <label for="time2">13:00 - 15:00</label>
-                    </div>
-                    <div class="radio-item">
-                        <input type="radio" id="time3" name="time" value="15:00 - 18:00">
-                        <label for="time3">15:00 - 18:00</label>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Start disabled per your requirement -->
-            <button type="submit" class="register-button" id="registerButton" disabled>
-                <span id="buttonText">Register Now</span>
-            </button>
-        </form>
+                <!-- Start disabled per your requirement -->
+                <button type="submit" class="register-button" id="registerButton" disabled>
+                    <span id="buttonText">Register Now</span>
+                </button>
+            </form>
+        </div>
     </div>
 
     <script src="script.js"></script>
