@@ -1,34 +1,3 @@
-// ====== Firebase initialization ======
-const firebaseConfig = {
-    apiKey: "AIzaSyA2Ur7siZr5rXnLWq4hkd__4Hm7HRK5eLs",
-    authDomain: "english-talks-439922.firebaseapp.com",
-    projectId: "english-talks-439922",
-    storageBucket: "english-talks-439922.firebasestorage.app",
-    messagingSenderId: "13608153412",
-    appId: "1:13608153412:web:f27d6c9ed7721421692711",
-    measurementId: "G-H3PL0HE4QN"
-};
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-
-// Auth state listener
-let initialized = false;
-auth.onAuthStateChanged((user) => {
-    document.getElementById('loadingContainer').style.display = 'none';
-    if (user) {
-        document.getElementById('loginContainer').style.display = 'none';
-        document.getElementById('expoContainer').style.display = 'block';
-        if (!initialized) {
-            initializeCountryDropdown();
-            validateForm();
-            initialized = true;
-        }
-    } else {
-        document.getElementById('loginContainer').style.display = 'block';
-        document.getElementById('expoContainer').style.display = 'none';
-    }
-});
-
 // Countries with phone codes
 const countries = [
     { name: "Afghanistan", code: "+93" },
@@ -273,7 +242,6 @@ const countries = [
     { name: "Zimbabwe", code: "+263" }
 ];
 
-
 let selectedCountry = null;
 
 // Toast notification functions
@@ -314,45 +282,6 @@ function removeToast(toast) {
         }
     }, 300);
 }
-
-// Login form validation
-function validateLogin() {
-    const email = document.getElementById('loginEmail').value.trim();
-    const password = document.getElementById('loginPassword').value;
-    const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    const allValid = email && password && password.length >= 6 && emailValid;
-    document.getElementById('loginButton').disabled = !allValid;
-}
-
-// Login form submission
-document.getElementById('loginForm').addEventListener('submit', async function (e) {
-    e.preventDefault();
-
-    const email = document.getElementById('loginEmail').value.trim();
-    const password = document.getElementById('loginPassword').value;
-
-    const button = document.getElementById('loginButton');
-    const buttonText = document.getElementById('loginButtonText');
-
-    // Show loading state
-    button.disabled = true;
-    buttonText.innerHTML = '<div class="loading-spinner"></div>';
-
-    try {
-        const userCredential = await auth.signInWithEmailAndPassword(email, password);
-        showToast('Signed in successfully!', 'success');
-        // The onAuthStateChanged will handle showing the expo form
-    } catch (error) {
-        showToast(`Sign in failed: ${error.message}`, 'error');
-        // Restore button
-        button.disabled = false;
-        buttonText.textContent = 'Sign In';
-    }
-});
-
-// Attach login validation listeners
-document.getElementById('loginEmail').addEventListener('input', validateLogin);
-document.getElementById('loginPassword').addEventListener('input', validateLogin);
 
 // Initialize country dropdown
 function initializeCountryDropdown() {
@@ -487,7 +416,6 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
     button.disabled = true;
     buttonText.innerHTML = '<div class="loading-spinner"></div>';
 
-
     // Collect form data
     const formData = {
         full_name: document.getElementById('fullName').value,
@@ -505,9 +433,6 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
         const success = await sendToBigQuery(formData);
 
         if (success) {
-            // Increment counter and store only on success
-            barcodeCounter++;
-            localStorage.setItem('barcodeCounter', barcodeCounter);
 
             // Show success message on button
             buttonText.textContent = 'Registration Successful!';
@@ -529,7 +454,6 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
         }
 
     } catch (error) {
-
         // Show error toast
         showToast('Registration failed. Please try again.', 'error');
 
@@ -542,16 +466,10 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
 // BigQuery integration function
 async function sendToBigQuery(data) {
     try {
-        // 🔑 Get Firebase ID Token
-        const user = auth.currentUser;
-        const idToken = await user.getIdToken();
-
-
         const response = await fetch("https://synctobigqueryandemail-13608153412.europe-west1.run.app", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${idToken}`,
             },
             body: JSON.stringify(data)
         });
@@ -574,5 +492,6 @@ async function sendToBigQuery(data) {
     }
 }
 
-// Initial setup for login form validation
-validateLogin();
+// Initial setup
+initializeCountryDropdown();
+validateForm();
