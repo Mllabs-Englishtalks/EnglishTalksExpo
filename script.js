@@ -318,11 +318,7 @@ document.getElementById('countrySearch').addEventListener('input', function (e) 
 
     countryItems.forEach(item => {
         const countryName = item.textContent.toLowerCase();
-        if (countryName.includes(searchTerm)) {
-            item.style.display = 'block';
-        } else {
-            item.style.display = 'none';
-        }
+        item.style.display = countryName.includes(searchTerm) ? 'block' : 'none';
     });
 });
 
@@ -433,31 +429,17 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
         const success = await sendToBigQuery(formData);
 
         if (success) {
-
-            // Show success message on button
-            buttonText.textContent = 'Registration Successful!';
-
-            setTimeout(() => {
-                // Reset form only on success
-                document.getElementById('registrationForm').reset();
-                document.getElementById('nationalityText').textContent = 'Select Country';
-                document.getElementById('startDateText').textContent = 'Select Date';
-                selectedCountry = null;
-                buttonText.textContent = 'Register Now';
-                // Re-validate to keep button state correct
-                validateForm();
-            }, 2000);
+            // Show thank you section instead of resetting form
+            document.getElementById("registrationForm").style.display = "none";
+            document.getElementById("thankYouMessage").style.display = "block";
         } else {
-            // Don't reset form on failure - just restore button
+            // Restore button text on failure
             buttonText.textContent = 'Register Now';
             validateForm();
         }
 
     } catch (error) {
-        // Show error toast
         showToast('Registration failed. Please try again.', 'error');
-
-        // Don't reset form on failure - just restore button
         buttonText.textContent = 'Register Now';
         validateForm();
     }
@@ -468,20 +450,16 @@ async function sendToBigQuery(data) {
     try {
         const response = await fetch("https://synctobigqueryandemail-13608153412.europe-west1.run.app", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)
         });
 
         const result = await response.json();
 
         if (response.ok && result.status === "success") {
-            // Show success toast
             showToast(result.message, "success");
             return true;
         } else {
-            // Failure - show error toast
             showToast(result.message, "error");
             return false;
         }
@@ -491,6 +469,17 @@ async function sendToBigQuery(data) {
         return false;
     }
 }
+
+// Reopen form button
+document.getElementById("reopenFormBtn").addEventListener("click", function () {
+    document.getElementById("registrationForm").reset();
+    document.getElementById("nationalityText").textContent = "Select Country";
+    document.getElementById("startDateText").textContent = "Select Date";
+    selectedCountry = null;
+    document.getElementById("thankYouMessage").style.display = "none";
+    document.getElementById("registrationForm").style.display = "block";
+    validateForm();
+});
 
 // Initial setup
 initializeCountryDropdown();
