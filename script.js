@@ -476,10 +476,17 @@ document.getElementById("reopenFormBtn").addEventListener("click", function () {
     document.getElementById("nationalityText").textContent = "Select Country";
     document.getElementById("startDateText").textContent = "Select Date";
     selectedCountry = null;
+
+    // Reset button text & state
+    document.getElementById("buttonText").textContent = "Register Now";
+    document.getElementById("registerButton").disabled = true;
+
     document.getElementById("thankYouMessage").style.display = "none";
     document.getElementById("registrationForm").style.display = "block";
+
     validateForm();
 });
+
 
 // Initial setup
 initializeCountryDropdown();
