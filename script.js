@@ -242,6 +242,7 @@ const countries = [
     { name: "Zimbabwe", code: "+263" }
 ];
 
+
 let selectedCountry = null;
 
 // Toast notification functions
@@ -376,6 +377,28 @@ document.addEventListener('click', function (e) {
     }
 });
 
+// --- PHONE NUMBER NORMALIZATION + VALIDATION ---
+function normalizeAndValidatePhone(phoneInput) {
+    if (!selectedCountry) return { valid: false, normalized: phoneInput };
+
+    let normalized = phoneInput.trim();
+
+    // If it does not start with selected code, prepend it
+    if (!normalized.startsWith(selectedCountry.code)) {
+        normalized = normalized.replace(/^0+/, ''); // strip leading zeros
+        normalized = selectedCountry.code + normalized;
+    }
+
+    // Validate: starts with selected code and rest is digits 6–15
+    const remaining = normalized.slice(selectedCountry.code.length);
+    const digitRegex = /^[0-9]{6,15}$/;
+
+    return {
+        valid: normalized.startsWith(selectedCountry.code) && digitRegex.test(remaining),
+        normalized
+    };
+}
+
 // Form validation to enable button only when all fields are filled and email is valid
 function validateForm() {
     const fullName = document.getElementById('fullName').value.trim();
@@ -388,7 +411,11 @@ function validateForm() {
     const time = document.querySelector('input[name="time"]:checked');
 
     const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    const allFilled = fullName && nationality && emailValid && phone && startDate && interest && cityDate && time;
+
+    // validate phone
+    const phoneCheck = normalizeAndValidatePhone(phone);
+
+    const allFilled = fullName && nationality && emailValid && phoneCheck.valid && startDate && interest && cityDate && time;
 
     document.getElementById('registerButton').disabled = !allFilled;
 }
@@ -413,11 +440,14 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
     buttonText.innerHTML = '<div class="loading-spinner"></div>';
 
     // Collect form data
+    const phoneInput = document.getElementById('phone').value;
+    const phoneCheck = normalizeAndValidatePhone(phoneInput);
+
     const formData = {
         full_name: document.getElementById('fullName').value,
         nationality: document.getElementById('nationality').value,
         email: document.getElementById('email').value,
-        phone_number: selectedCountry ? `${selectedCountry.code}${document.getElementById('phone').value}` : document.getElementById('phone').value,
+        phone_number: phoneCheck.normalized,
         interest: document.querySelector('input[name="interest"]:checked')?.value || '',
         start_date: document.getElementById('startDate').value,
         city_date: document.querySelector('input[name="cityDate"]:checked')?.value || '',
@@ -486,7 +516,6 @@ document.getElementById("reopenFormBtn").addEventListener("click", function () {
 
     validateForm();
 });
-
 
 // Initial setup
 initializeCountryDropdown();
